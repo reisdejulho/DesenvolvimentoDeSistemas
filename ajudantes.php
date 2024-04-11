@@ -1,23 +1,66 @@
-
 <?php
-if (isset($_POST['nome']) && $_POST['nome'] != '') {
-$tarefa = array();
-$tarefa['id'] = $_POST['id'];
-$tarefa['nome'] = $_POST['nome'];
-if (isset($_POST['descricao'])) {
-$tarefa['descricao'] = $_POST['descricao'];
-} else {
-$tarefa['descricao'] = '';
+
+
+function traduz_concluida($concluida)
+{
+    if ($concluida == 1) {
+        return 'Sim';
+    }
+
+
+    return 'Não';
 }
-if (isset($_POST['prazo'])) {
-$tarefa['prazo'] = traduz_data_para_banco($_POST['prazo']);
-} else {
-$tarefa['prazo'] = '';
+
+
+function traduz_prioridade($codigo)
+{
+    $prioridade = '';
+    switch ($codigo) {
+        case 1:
+            $prioridade = 'Baixa';
+            break;
+        case 2:
+            $prioridade = 'Média';
+            break;
+        case 3:
+            $prioridade = 'Alta';
+            break;
+    }
+
+
+    return $prioridade;
 }
-$tarefa['prioridade'] = $_POST['prioridade'];
-if (isset($_POST['concluida'])) {
-$tarefa['concluida'] = 1;
-} else {
-$tarefa['concluida'] = 0;
+
+
+function traduz_data_para_banco($data)
+{
+    if ($data == "") {
+        return "";
+    }
+
+
+    $dados = explode("/", $data);
+
+
+    $data_mysql = "{$dados[2]}-{$dados[1]}-{$dados[0]}";
+
+
+    return $data_mysql;
 }
-editar_tarefa($conexao, $tarefa);
+
+
+function traduz_data_para_exibir($data)
+{
+    if ($data == "" OR $data == "0000-00-00") {
+        return "";
+    }
+
+
+    $dados = explode("-", $data);
+
+
+    $data_exibir = "{$dados[2]}/{$dados[1]}/{$dados[0]}";
+
+
+    return $data_exibir;
+}
